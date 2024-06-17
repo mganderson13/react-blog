@@ -22,7 +22,7 @@ function App() {
           <Route path="/articles/:articleId" element={<ArticlePage />} />
           <Route path="*" element={<NotFoundPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/login" element={<CreateAccountPage />} />
+          <Route path="/create-account" element={<CreateAccountPage />} />
         </Routes>
       </div>
     </div>
