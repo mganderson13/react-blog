@@ -5,12 +5,15 @@ import articles from "./article-content";
 import CommentsList from '../components/CommentsList';
 import AddCommentForm from '../components/AddCommentForm';
 import NotFoundPage from "./NotFoundPage";
+import useUser from '../hooks/useUser';
 
 const ArticlePage = () => {
     const [articleInfo, setArticleInfo] = useState({ upvotes: 0, comments: [] })
     //useParams and destructure to get param string from path in app.js route
     //no need to have separate page for each article b/c useParams
     const { articleId }= useParams();
+
+    const { user, isLoading } = useUser();
 
     useEffect(() => {
         //need internal function b/c fo async/await
@@ -39,16 +42,20 @@ const ArticlePage = () => {
     <>
         <h1>{article.title}</h1>
          <div className='upvotes-section'>
-            <button onClick={addUpvote}>Upvote Article</button>
+            {user 
+            ? <button onClick={addUpvote}>Upvote Article</button>
+            : <button>Log in to upvote</button>}
             <p>This article has {articleInfo.upvotes} upvotes</p>
          </div>
         {article.content.map((paragraph, i) => (
             <p key={i}>{paragraph}</p>
         ))}
-        <AddCommentForm 
+        {user
+        ? <AddCommentForm 
           articleName={articleId} 
           onArticleUpdated={updatedArticle => setArticleInfo(updatedArticle)} 
         />
+        : <button>Log in to add comment</button>}
         <CommentsList comments={articleInfo.comments} />
     </>
     );
